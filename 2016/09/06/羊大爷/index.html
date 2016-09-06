@@ -4,17 +4,28 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>羊大爷 | 欢迎访问杨旭的blog</title>
+  <title>presentviewcontroller方式切换很慢，有时会延时几秒 | 旭神的博客 😀</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="羊大爷">
+  <meta name="description" content="presentviewcontroller方式切换很慢，有时会延时几秒最近发现这个问题，需要差不多5秒左右才能跳转，很郁闷的问题。加了如上的GDP线程后，立即正常。所以可能的原因是
+
+(void)presentViewController:(UIViewController *)viewControllerToPresent animated: (BOOL)flag completion:(voi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="presentviewcontroller方式切换很慢，有时会延时几秒">
 <meta property="og:url" content="http://yoursite.com/2016/09/06/羊大爷/index.html">
-<meta property="og:site_name" content="欢迎访问杨旭的blog">
-<meta property="og:updated_time" content="2016-09-06T03:02:08.000Z">
+<meta property="og:site_name" content="旭神的博客 😀">
+<meta property="og:description" content="presentviewcontroller方式切换很慢，有时会延时几秒最近发现这个问题，需要差不多5秒左右才能跳转，很郁闷的问题。加了如上的GDP线程后，立即正常。所以可能的原因是
+
+(void)presentViewController:(UIViewController *)viewControllerToPresent animated: (BOOL)flag completion:(voi">
+<meta property="og:image" content="https://git.oschina.net/chinatower/tongyimenhu/raw/master/002s3TBpzy732z6z1NBef&690.jpg">
+<meta property="og:updated_time" content="2016-09-06T07:45:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="羊大爷">
+<meta name="twitter:title" content="presentviewcontroller方式切换很慢，有时会延时几秒">
+<meta name="twitter:description" content="presentviewcontroller方式切换很慢，有时会延时几秒最近发现这个问题，需要差不多5秒左右才能跳转，很郁闷的问题。加了如上的GDP线程后，立即正常。所以可能的原因是
+
+(void)presentViewController:(UIViewController *)viewControllerToPresent animated: (BOOL)flag completion:(voi">
+<meta name="twitter:image" content="https://git.oschina.net/chinatower/tongyimenhu/raw/master/002s3TBpzy732z6z1NBef&690.jpg">
   
-    <link rel="alternative" href="/atom.xml" title="欢迎访问杨旭的blog" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="旭神的博客 😀" type="application/atom+xml">
   
   
     <link rel="icon" href="//favicon.png">
@@ -39,7 +50,7 @@
 		</hgroup>
 
 		
-		<p class="header-subtitle">陷于才华</p>
+		<p class="header-subtitle">热爱生活，陷于才华，忠于人品</p>
 		
 
 		
@@ -99,6 +110,8 @@
 					<nav class="header-nav">
 						<div class="social">
 							
+								<a class="github" target="_blank" href="https://github.com/yx-cell" title="github">github</a>
+					        
 								<a class="weibo" target="_blank" href="http://www.weibo.com/u/2246931795" title="weibo">weibo</a>
 					        
 						</div>
@@ -163,7 +176,7 @@
 			  <h1 class="header-author">杨旭</h1>
 			</hgroup>
 			
-			<p class="header-subtitle">陷于才华</p>
+			<p class="header-subtitle">热爱生活，陷于才华，忠于人品</p>
 			
 			<nav class="header-menu">
 				<ul>
@@ -178,6 +191,8 @@
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="github" target="_blank" href="https://github.com/yx-cell" title="github">github</a>
+			        
 						<a class="weibo" target="_blank" href="http://www.weibo.com/u/2246931795" title="weibo">weibo</a>
 			        
 				</div>
@@ -203,7 +218,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      羊大爷
+      presentviewcontroller方式切换很慢，有时会延时几秒
     </h1>
   
 
@@ -219,23 +234,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>presentviewcontroller方式切换很慢，有时会延时几秒<br>最近发现这个问题，需要差不多5秒左右才能跳转，很郁闷的问题。加了如上的GDP线程后，立即正常。所以可能的原因是</p>
+<ul>
+<li>(void)presentViewController:(UIViewController *)viewControllerToPresent animated: (BOOL)flag completion:(void (^)(void))completion</li>
+</ul>
+<p>这个方法有可能不是在UI线程加载的。不知道这个方法里面苹果改了什么。</p>
+<p>原因是：由于某种原因，presentViewController里的内容并不会真的马上触发执行，除非有一个主线程事件触发这种消费。比如在弹出慢的时候，你随便点击一下屏幕，马上就能弹出来。解决方案：随便performSelector一下，这个函数里可以啥也不干，目的就是将主线程唤醒执行。</p>
+<p><img src="https://git.oschina.net/chinatower/tongyimenhu/raw/master/002s3TBpzy732z6z1NBef&amp;690.jpg" alt="image"></p>
+<p>或者放在GDP主线程：</p>
+<p>dispatch_async(dispatch_get_main_queue(), ^{<br>code….<br>});</p>
+
       
     </div>
     
   </div>
   
     
-<nav id="article-nav">
-  
-  
-    <a href="/2016/09/05/My-New-Post/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">My New Post</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
   
 </article>
 
@@ -265,7 +279,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="羊大爷" data-title="羊大爷" data-url="http://yoursite.com/2016/09/06/羊大爷/"></div>
+	<div class="ds-thread" data-thread-key="羊大爷" data-title="presentviewcontroller方式切换很慢，有时会延时几秒" data-url="http://yoursite.com/2016/09/06/羊大爷/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
